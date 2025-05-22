@@ -1,4 +1,5 @@
 
+import React, { useEffect } from "react";
 import { Github, Linkedin, Instagram, Twitter, Mail, Phone, ExternalLink } from "lucide-react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
@@ -9,10 +10,23 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import MouseTracker from "@/components/MouseTracker";
+import BackgroundAnimation from "@/components/BackgroundAnimation";
+import { initScrollAnimations } from "@/utils/scrollAnimation";
 
 const Index = () => {
+  useEffect(() => {
+    // Initialize scroll animations
+    const cleanup = initScrollAnimations();
+    return cleanup;
+  }, []);
+
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background overflow-x-hidden">
+      {/* Custom cursor and background animations */}
+      <MouseTracker />
+      <BackgroundAnimation />
+
       {/* Navigation */}
       <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-16 items-center">
@@ -95,7 +109,7 @@ const Index = () => {
       {/* About Section */}
       <section id="about" className="bg-muted/30 py-20">
         <div className="container">
-          <h2 className="text-3xl font-bold mb-12 animate-slide-up">About Me</h2>
+          <h2 className="text-3xl font-bold mb-12" data-animate="animate-slide-up">About Me</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
             <div className="space-y-4">
               {[
@@ -103,7 +117,7 @@ const Index = () => {
                 "Currently serving as the IEEE Design Lead, I blend my technical knowledge with creative skills to design user-friendly interfaces and implement innovative solutions.",
                 "I've worked as a UI Engineering Intern at IMIOT Technolabs LLP, where I gained hands-on experience in frontend design and development using HTML, CSS, and JavaScript."
               ].map((para, i) => (
-                <p key={i} className="animate-slide-up" style={{ animationDelay: `${i * 0.2}s` }}>{para}</p>
+                <p key={i} data-animate="animate-reveal-right" data-delay={i * 0.2}>{para}</p>
               ))}
             </div>
             <div className="space-y-4">
@@ -111,19 +125,22 @@ const Index = () => {
                 { icon: Mail, text: "abhayappu8@gmail.com" },
                 { icon: Phone, text: "+91 8136977264" },
                 { 
-                  icon: () => (
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary">
-                      <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
-                      <circle cx="12" cy="10" r="3"></circle>
-                    </svg>
-                  ), 
+                  icon: function LocationIcon() {
+                    return (
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary">
+                        <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+                        <circle cx="12" cy="10" r="3"></circle>
+                      </svg>
+                    );
+                  }, 
                   text: "Kannur, Kerala (Currently at Pala)" 
                 }
               ].map((item, i) => (
                 <div 
                   key={i} 
-                  className="flex gap-4 items-center animate-slide-up hover-lift p-2 rounded-md transition-all duration-300 hover:bg-background" 
-                  style={{ animationDelay: `${i * 0.2 + 0.6}s` }}
+                  className="flex gap-4 items-center hover-lift p-2 rounded-md transition-all duration-300 hover:bg-background" 
+                  data-animate="animate-reveal-left"
+                  data-delay={i * 0.2 + 0.3}
                 >
                   {typeof item.icon === 'function' 
                     ? <item.icon />
@@ -139,7 +156,7 @@ const Index = () => {
 
       {/* Education Section */}
       <section id="education" className="container py-20">
-        <h2 className="text-3xl font-bold mb-12 animate-slide-up">Education</h2>
+        <h2 className="text-3xl font-bold mb-12" data-animate="animate-slide-up">Education</h2>
         <div className="space-y-10">
           {[
             {
@@ -157,8 +174,9 @@ const Index = () => {
           ].map((edu, i) => (
             <Card 
               key={i} 
-              className="hover-lift animate-fade-in transition-all duration-500 hover:border-primary/50"
-              style={{ animationDelay: `${i * 0.3}s` }}
+              className="hover-lift transition-all duration-500 hover:border-primary/50"
+              data-animate="animate-slide-up"
+              data-delay={i * 0.3}
             >
               <CardHeader>
                 <CardTitle className="flex justify-between items-center">
@@ -179,7 +197,7 @@ const Index = () => {
       {/* Skills Section */}
       <section id="skills" className="bg-muted/30 py-20">
         <div className="container">
-          <h2 className="text-3xl font-bold mb-12 animate-slide-up">Technical Skills</h2>
+          <h2 className="text-3xl font-bold mb-12" data-animate="animate-slide-up">Technical Skills</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               {
@@ -207,15 +225,16 @@ const Index = () => {
             ].map((category, i) => (
               <Card 
                 key={i} 
-                className="hover-lift animate-fade-in transition-all duration-500"
-                style={{ animationDelay: `${i * 0.2}s` }}
+                className="hover-lift transition-all duration-500"
+                data-animate="animate-fade-in"
+                data-delay={i * 0.2}
               >
                 <CardHeader>
                   <CardTitle>{category.category}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {category.skills.map((skill, j) => (
-                    <div key={j} className="animate-slide-up" style={{ animationDelay: `${i * 0.2 + j * 0.1 + 0.3}s` }}>
+                    <div key={j} data-animate="animate-slide-up" data-delay={i * 0.2 + j * 0.1 + 0.3}>
                       <div className="flex justify-between mb-1">
                         <span className="font-medium">{skill.name}</span>
                         <span className="text-primary font-medium">{skill.level}%</span>
@@ -224,17 +243,9 @@ const Index = () => {
                         <div 
                           className="bg-primary rounded-full h-2 transition-all duration-1000 ease-out" 
                           style={{ 
-                            width: "0%",
-                            animation: "progress 1.5s ease-out forwards",
-                            animationDelay: `${i * 0.2 + j * 0.1 + 0.5}s` 
+                            width: `${skill.level}%`
                           }}
                         ></div>
-                        <style jsx>{`
-                          @keyframes progress {
-                            from { width: 0%; }
-                            to { width: ${skill.level}%; }
-                          }
-                        `}</style>
                       </div>
                     </div>
                   ))}
@@ -243,14 +254,15 @@ const Index = () => {
             ))}
           </div>
           
-          <div className="mt-10 animate-fade-in" style={{ animationDelay: "0.8s" }}>
+          <div className="mt-10" data-animate="animate-fade-in" data-delay="0.8">
             <h3 className="text-xl font-semibold mb-4">Tools & Technologies</h3>
             <div className="flex flex-wrap gap-2">
               {["Figma", "MATLAB", "PyCharm", "Git", "Notion", "Canva", "VS Code", "Python", "Flask", "Bootstrap"].map((tool, i) => (
                 <span 
                   key={tool} 
-                  className="px-3 py-1 bg-background rounded-full border text-sm hover-lift animate-fade-in cursor-default hover:bg-primary hover:text-white hover:border-primary transition-all duration-300"
-                  style={{ animationDelay: `${i * 0.1 + 0.9}s` }}
+                  className="px-3 py-1 bg-background rounded-full border text-sm hover-lift cursor-default hover:bg-primary hover:text-white hover:border-primary transition-all duration-300"
+                  data-animate="animate-fade-in"
+                  data-delay={i * 0.1 + 0.9}
                 >
                   {tool}
                 </span>
@@ -262,7 +274,7 @@ const Index = () => {
 
       {/* Projects Section */}
       <section id="projects" className="container py-20">
-        <h2 className="text-3xl font-bold mb-12 animate-slide-up">Projects</h2>
+        <h2 className="text-3xl font-bold mb-12" data-animate="animate-slide-up">Projects</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[
             {
@@ -308,8 +320,9 @@ const Index = () => {
           ].map((project, i) => (
             <Card 
               key={i} 
-              className="overflow-hidden hover-lift animate-fade-in transition-all duration-300 group"
-              style={{ animationDelay: `${i * 0.3}s` }}
+              className="overflow-hidden hover-lift transition-all duration-300 group"
+              data-animate="animate-fade-in"
+              data-delay={i * 0.3}
             >
               <div className="h-48 bg-muted flex items-center justify-center group-hover:bg-primary/5 transition-colors duration-300">
                 <div className="transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3">
@@ -340,11 +353,11 @@ const Index = () => {
       {/* Experience & Volunteering */}
       <section className="bg-muted/30 py-20">
         <div className="container">
-          <h2 className="text-3xl font-bold mb-12 animate-slide-up">Experience & Volunteering</h2>
+          <h2 className="text-3xl font-bold mb-12" data-animate="animate-slide-up">Experience & Volunteering</h2>
           
           <div className="mb-12">
-            <h3 className="text-xl font-semibold mb-6 animate-slide-up" style={{ animationDelay: "0.2s" }}>Internships</h3>
-            <Card className="hover-lift animate-fade-in transition-all duration-500">
+            <h3 className="text-xl font-semibold mb-6" data-animate="animate-slide-up" data-delay="0.2">Internships</h3>
+            <Card className="hover-lift transition-all duration-500" data-animate="animate-fade-in">
               <CardHeader>
                 <div className="flex justify-between items-start">
                   <CardTitle>UI Engineering Intern</CardTitle>
@@ -358,7 +371,7 @@ const Index = () => {
                     "Worked on frontend design and development using HTML, CSS, JavaScript",
                     "Collaborated in UI/UX Design, created interactive and responsive web pages"
                   ].map((item, i) => (
-                    <li key={i} className="animate-slide-up" style={{ animationDelay: `${i * 0.2 + 0.4}s` }}>{item}</li>
+                    <li key={i} data-animate="animate-slide-up" data-delay={i * 0.2 + 0.4}>{item}</li>
                   ))}
                 </ul>
               </CardContent>
@@ -366,7 +379,7 @@ const Index = () => {
           </div>
           
           <div>
-            <h3 className="text-xl font-semibold mb-6 animate-slide-up" style={{ animationDelay: "0.6s" }}>IEEE Roles & Volunteering</h3>
+            <h3 className="text-xl font-semibold mb-6" data-animate="animate-slide-up" data-delay="0.6">IEEE Roles & Volunteering</h3>
             <div className="space-y-6">
               {[
                 {
@@ -396,8 +409,9 @@ const Index = () => {
               ].map((role, i) => (
                 <Card 
                   key={i} 
-                  className="hover-lift animate-fade-in transition-all duration-500 hover:border-primary/30"
-                  style={{ animationDelay: `${i * 0.3 + 0.8}s` }}
+                  className="hover-lift transition-all duration-500 hover:border-primary/30"
+                  data-animate="animate-fade-in"
+                  data-delay={i * 0.3 + 0.8}
                 >
                   <CardHeader>
                     <div className="flex justify-between items-start">
@@ -408,7 +422,7 @@ const Index = () => {
                   <CardContent>
                     <ul className="list-disc ml-5 space-y-2">
                       {role.items.map((item, j) => (
-                        <li key={j} className="animate-slide-up" style={{ animationDelay: `${i * 0.3 + j * 0.2 + 1}s` }}>{item}</li>
+                        <li key={j} data-animate="animate-slide-up" data-delay={i * 0.3 + j * 0.2 + 1}>{item}</li>
                       ))}
                     </ul>
                   </CardContent>
@@ -421,7 +435,7 @@ const Index = () => {
 
       {/* Certifications Section */}
       <section id="certifications" className="container py-20">
-        <h2 className="text-3xl font-bold mb-12 animate-slide-up">Certifications</h2>
+        <h2 className="text-3xl font-bold mb-12" data-animate="animate-slide-up">Certifications</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {[
             { title: "90 Days Full Stack", org: "IMIOT Technolabs" },
@@ -435,8 +449,9 @@ const Index = () => {
           ].map((cert, i) => (
             <Card 
               key={i} 
-              className="hover-lift animate-fade-in transition-all duration-300 hover:border-primary/30 group"
-              style={{ animationDelay: `${i * 0.1}s` }}
+              className="hover-lift transition-all duration-300 hover:border-primary/30 group"
+              data-animate="animate-fade-in"
+              data-delay={i * 0.1}
             >
               <CardHeader>
                 <CardTitle className="group-hover:text-primary transition-colors duration-300">{cert.title}</CardTitle>
@@ -450,9 +465,9 @@ const Index = () => {
       {/* Contact Section */}
       <section id="contact" className="bg-muted/30 py-20">
         <div className="container">
-          <h2 className="text-3xl font-bold mb-12 animate-slide-up">Contact Me</h2>
+          <h2 className="text-3xl font-bold mb-12" data-animate="animate-slide-up">Contact Me</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-            <div className="space-y-6 animate-slide-in" style={{ animationDelay: "0.2s" }}>
+            <div className="space-y-6" data-animate="animate-slide-in" data-delay="0.2">
               <h3 className="text-xl font-semibold">Get In Touch</h3>
               <p>Feel free to contact me for any work or suggestions below.</p>
               
@@ -461,22 +476,28 @@ const Index = () => {
                   { icon: Mail, text: "abhayappu8@gmail.com", href: "mailto:abhayappu8@gmail.com" },
                   { icon: Phone, text: "+91 8136977264", href: "tel:+918136977264" },
                   { 
-                    icon: () => (
-                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary">
-                        <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
-                        <circle cx="12" cy="10" r="3"></circle>
-                      </svg>
-                    ), 
+                    icon: function LocationIcon() { 
+                      return (
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary">
+                          <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+                          <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                      );
+                    }, 
                     text: "Kannur, Kerala (Currently at Pala)",
                     href: "#"
                   }
                 ].map((contact, i) => (
                   <div 
                     key={i} 
-                    className="flex gap-4 items-center animate-slide-up hover-lift" 
-                    style={{ animationDelay: `${i * 0.2 + 0.4}s` }}
+                    className="flex gap-4 items-center hover-lift" 
+                    data-animate="animate-slide-up"
+                    data-delay={i * 0.2 + 0.4}
                   >
-                    {typeof contact.icon === 'function' ? <contact.icon /> : <contact.icon className="text-primary" size={20} />}
+                    {typeof contact.icon === 'function' 
+                      ? <contact.icon />
+                      : <contact.icon className="text-primary" size={20} />
+                    }
                     <a href={contact.href} className="hover:underline hover:text-primary transition-colors duration-300">
                       {contact.text}
                     </a>
@@ -497,7 +518,8 @@ const Index = () => {
                     target="_blank" 
                     rel="noopener noreferrer" 
                     className="hover:text-primary transform transition-all duration-300 hover:scale-125 hover:rotate-6"
-                    style={{ animationDelay: `${i * 0.1 + 0.9}s` }}
+                    data-animate="animate-fade-in"
+                    data-delay={i * 0.1 + 0.9}
                   >
                     <social.icon size={24} className="animate-fade-in" />
                   </a>
@@ -505,14 +527,14 @@ const Index = () => {
               </div>
             </div>
             
-            <Card className="animate-fade-in hover-lift" style={{ animationDelay: "0.6s" }}>
+            <Card className="hover-lift" data-animate="animate-fade-in" data-delay="0.6">
               <CardHeader>
                 <CardTitle>Send Me a Message</CardTitle>
               </CardHeader>
               <CardContent>
                 <form className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2 animate-slide-up" style={{ animationDelay: "0.7s" }}>
+                    <div className="space-y-2" data-animate="animate-slide-up" data-delay="0.7">
                       <label htmlFor="name" className="text-sm font-medium">Name</label>
                       <input
                         id="name"
@@ -521,7 +543,7 @@ const Index = () => {
                         placeholder="Your Name"
                       />
                     </div>
-                    <div className="space-y-2 animate-slide-up" style={{ animationDelay: "0.8s" }}>
+                    <div className="space-y-2" data-animate="animate-slide-up" data-delay="0.8">
                       <label htmlFor="email" className="text-sm font-medium">Email</label>
                       <input
                         id="email"
@@ -531,7 +553,7 @@ const Index = () => {
                       />
                     </div>
                   </div>
-                  <div className="space-y-2 animate-slide-up" style={{ animationDelay: "0.9s" }}>
+                  <div className="space-y-2" data-animate="animate-slide-up" data-delay="0.9">
                     <label htmlFor="subject" className="text-sm font-medium">Subject</label>
                     <input
                       id="subject"
@@ -540,7 +562,7 @@ const Index = () => {
                       placeholder="Subject"
                     />
                   </div>
-                  <div className="space-y-2 animate-slide-up" style={{ animationDelay: "1s" }}>
+                  <div className="space-y-2" data-animate="animate-slide-up" data-delay="1">
                     <label htmlFor="message" className="text-sm font-medium">Message</label>
                     <textarea
                       id="message"
@@ -551,8 +573,9 @@ const Index = () => {
                   </div>
                   <Button 
                     type="submit" 
-                    className="w-full hover-lift animate-slide-up transition-all duration-500 hover:bg-primary/90"
-                    style={{ animationDelay: "1.1s" }}
+                    className="w-full hover-lift transition-all duration-500 hover:bg-primary/90"
+                    data-animate="animate-slide-up"
+                    data-delay="1.1"
                   >
                     Send Message
                   </Button>
