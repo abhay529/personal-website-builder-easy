@@ -19,8 +19,10 @@ export const initScrollAnimations = () => {
       // Apply animation class when element is in viewport
       if (isInViewport) {
         element.classList.add(animationType);
-        element.style.animationDelay = `${delay}s`;
-        element.style.opacity = '1';
+        // Type assertion to HTMLElement to access style property
+        const htmlElement = element as HTMLElement;
+        htmlElement.style.animationDelay = `${delay}s`;
+        htmlElement.style.opacity = '1';
       }
     });
   };

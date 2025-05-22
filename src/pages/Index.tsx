@@ -1,4 +1,3 @@
-
 import React, { useEffect } from "react";
 import { Github, Linkedin, Instagram, Twitter, Mail, Phone, ExternalLink } from "lucide-react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
@@ -13,6 +12,14 @@ import {
 import MouseTracker from "@/components/MouseTracker";
 import BackgroundAnimation from "@/components/BackgroundAnimation";
 import { initScrollAnimations } from "@/utils/scrollAnimation";
+
+// Define LocationIcon as a component for reuse
+const LocationIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary">
+    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+    <circle cx="12" cy="10" r="3"></circle>
+  </svg>
+);
 
 const Index = () => {
   useEffect(() => {
@@ -124,17 +131,7 @@ const Index = () => {
               {[
                 { icon: Mail, text: "abhayappu8@gmail.com" },
                 { icon: Phone, text: "+91 8136977264" },
-                { 
-                  icon: function LocationIcon() {
-                    return (
-                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary">
-                        <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
-                        <circle cx="12" cy="10" r="3"></circle>
-                      </svg>
-                    );
-                  }, 
-                  text: "Kannur, Kerala (Currently at Pala)" 
-                }
+                { icon: LocationIcon, text: "Kannur, Kerala (Currently at Pala)" }
               ].map((item, i) => (
                 <div 
                   key={i} 
@@ -142,10 +139,7 @@ const Index = () => {
                   data-animate="animate-reveal-left"
                   data-delay={i * 0.2 + 0.3}
                 >
-                  {typeof item.icon === 'function' 
-                    ? <item.icon />
-                    : <item.icon size={20} className="text-primary" />
-                  }
+                  {item.icon === LocationIcon ? <LocationIcon /> : <item.icon size={20} className="text-primary" />}
                   <span>{item.text}</span>
                 </div>
               ))}
@@ -475,18 +469,7 @@ const Index = () => {
                 {[
                   { icon: Mail, text: "abhayappu8@gmail.com", href: "mailto:abhayappu8@gmail.com" },
                   { icon: Phone, text: "+91 8136977264", href: "tel:+918136977264" },
-                  { 
-                    icon: function LocationIcon() { 
-                      return (
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary">
-                          <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
-                          <circle cx="12" cy="10" r="3"></circle>
-                        </svg>
-                      );
-                    }, 
-                    text: "Kannur, Kerala (Currently at Pala)",
-                    href: "#"
-                  }
+                  { icon: LocationIcon, text: "Kannur, Kerala (Currently at Pala)", href: "#" }
                 ].map((contact, i) => (
                   <div 
                     key={i} 
@@ -494,10 +477,7 @@ const Index = () => {
                     data-animate="animate-slide-up"
                     data-delay={i * 0.2 + 0.4}
                   >
-                    {typeof contact.icon === 'function' 
-                      ? <contact.icon />
-                      : <contact.icon className="text-primary" size={20} />
-                    }
+                    {contact.icon === LocationIcon ? <LocationIcon /> : <contact.icon className="text-primary" size={20} />}
                     <a href={contact.href} className="hover:underline hover:text-primary transition-colors duration-300">
                       {contact.text}
                     </a>

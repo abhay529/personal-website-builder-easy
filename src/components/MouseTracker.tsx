@@ -62,7 +62,7 @@ const MouseTracker = () => {
           transition: 'transform 0.1s linear',
         }}
       />
-      <style jsx>
+      <style>
         {`
           body {
             cursor: none;
